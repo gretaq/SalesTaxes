@@ -13,6 +13,6 @@ public final class FloatTruncator {
 	
 	public static double RoundingDown(double value, int decimalsNumber) {
 		double temp = Math.pow(10, decimalsNumber);
-		return Math.floor(value * temp) / temp;
+		return Math.round(value * temp) / temp;
 	}
 }

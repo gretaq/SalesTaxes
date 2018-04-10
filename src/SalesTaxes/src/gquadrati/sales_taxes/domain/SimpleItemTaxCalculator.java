@@ -7,12 +7,12 @@ public class SimpleItemTaxCalculator implements ItemTaxCalculator {
 
 	ItemConfiguration itemConfiguration;
 	private double basicSalesTax;
-	private double importedItemTaxPercentage;
+	private double importedItemTax;
 
 	public SimpleItemTaxCalculator(ItemConfiguration itemConfiguration) {
 		this.itemConfiguration = itemConfiguration;
-		this.basicSalesTax = 0.1;
-		this.importedItemTaxPercentage = 0.05;
+		this.basicSalesTax = 10;
+		this.importedItemTax = 5;
 	}
 
 	@Override
@@ -21,10 +21,10 @@ public class SimpleItemTaxCalculator implements ItemTaxCalculator {
 		double taxes = 0f;
 
 		if (!itemConfiguration.isTaxFree(item))
-			taxes +=  round(item.getPrice() * basicSalesTax * 100, 5) / 100;
+			taxes +=  round(item.getPrice() * basicSalesTax, 5) / 100;
 
 		if(item.getIsImported())
-			taxes +=  round(item.getPrice() * importedItemTaxPercentage * 100, 5) / 100;
+			taxes +=  round(item.getPrice() * importedItemTax, 5) / 100;
 
 		//Round the value to the nearest 0.05 decimal
 		taxes = FloatTruncator.RoundingUp(taxes, 2);
@@ -35,7 +35,7 @@ public class SimpleItemTaxCalculator implements ItemTaxCalculator {
 
 
 	private double round(double i, int v){
-		double val =  Math.round(i/v) * v;
+		double val =  Math.ceil(i/v) * v;
 		return val;
 	}
 
