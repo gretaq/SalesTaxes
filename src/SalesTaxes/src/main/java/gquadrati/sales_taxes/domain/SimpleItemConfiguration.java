@@ -3,7 +3,6 @@ package gquadrati.sales_taxes.domain;
 import java.util.HashSet;
 import java.util.Hashtable;
 
-
 import gquadrati.sales_taxes.models.Item;
 
 public class SimpleItemConfiguration implements ItemConfiguration {
