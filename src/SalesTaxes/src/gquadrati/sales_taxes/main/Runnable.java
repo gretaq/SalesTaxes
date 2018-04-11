@@ -56,10 +56,10 @@ public class Runnable {
 
 		Receipt  receipt = new SimpleReceipt(shoppingBasket, taxCalculator);
 
-		System.out.println(receipt.toString());
+		//System.out.println(receipt.toString());
 		System.out.println(receipt.getTotal() == 29.830);
+		System.out.println(receipt.getSalesTaxesTotal() == 1.50);
 	}
-
 
 
 	private static void Test3()
@@ -111,8 +111,9 @@ public class Runnable {
 
 		Receipt  receipt = new SimpleReceipt(shoppingBasket, taxCalculator);
 
-		System.out.println(receipt.toString());
+		//System.out.println(receipt.toString());
 		System.out.println(receipt.getTotal() == 74.68);
+		System.out.println(receipt.getSalesTaxesTotal() == 6.70);
 	}
 
 
@@ -149,7 +150,8 @@ public class Runnable {
 
 		Receipt  receipt = new SimpleReceipt(shoppingBasket, taxCalculator);
 
-		System.out.println(receipt.toString());
+		//System.out.println(receipt.toString());
 		System.out.println(receipt.getTotal() == 65.15);
+		System.out.println(receipt.getSalesTaxesTotal() == 7.65);
 	}
 }
