@@ -1,6 +1,6 @@
 package gquadrati.sales_taxes.domain;
 
-import gquadrati.sales_taxes.helpers.FloatTruncator;
+import gquadrati.sales_taxes.helpers.DoubleHelper;
 import gquadrati.sales_taxes.models.Item;
 
 public class SimpleItemTaxCalculator implements ItemTaxCalculator {
@@ -9,10 +9,13 @@ public class SimpleItemTaxCalculator implements ItemTaxCalculator {
 	private double basicSalesTax;
 	private double importedItemTax;
 
+	
 	public SimpleItemTaxCalculator(ItemConfiguration itemConfiguration) {
 		this.itemConfiguration = itemConfiguration;
-		this.basicSalesTax = 10;
-		this.importedItemTax = 5;
+		
+		//n/100
+		this.basicSalesTax = 0.1; 
+		this.importedItemTax = 0.05;
 	}
 
 	@Override
@@ -20,25 +23,15 @@ public class SimpleItemTaxCalculator implements ItemTaxCalculator {
 
 		double taxes = 0f;
 
+		//Round the value to the nearest 0.05 decimal both taxes
 		if (!itemConfiguration.isTaxFree(item))
-			taxes +=  round(item.getPrice() * basicSalesTax, 5) / 100;
+			taxes +=  DoubleHelper.RoundToTheNearestValue(item.getPrice() * basicSalesTax, 0.05);
 
 		if(item.getIsImported())
-			taxes +=  round(item.getPrice() * importedItemTax, 5) / 100;
-
-		//Round the value to the nearest 0.05 decimal
-		taxes = FloatTruncator.RoundingUp(taxes, 2);
-		//taxes = round(taxes *100, 5) / 100;
+			taxes +=  DoubleHelper.RoundToTheNearestValue(item.getPrice() * importedItemTax, 0.05);
+		
+		taxes = DoubleHelper.RoundingUp(taxes, 2);
 
 		return taxes;
 	}
-
-
-	private double round(double i, int v){
-		double val =  Math.ceil(i/v) * v;
-		return val;
-	}
-
-
-
 }

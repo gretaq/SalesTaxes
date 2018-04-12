@@ -1,7 +1,7 @@
 package gquadrati.sales_taxes.models;
 
 import gquadrati.sales_taxes.domain.ItemTaxCalculator;
-import gquadrati.sales_taxes.helpers.FloatTruncator;
+import gquadrati.sales_taxes.helpers.DoubleHelper;
 
 //Item Decorator - Decorates item with tax price
 public class SimpleTaxedItem implements TaxedItem {
@@ -15,7 +15,7 @@ public class SimpleTaxedItem implements TaxedItem {
 	{
 		this.baseItem = baseItem;
 		this.taxes = itemTaxCalculator.calculateTaxesFor(baseItem);
-		this.total = FloatTruncator.RoundingUp(this.baseItem.getPrice() + this.taxes, 2);
+		this.total = DoubleHelper.RoundingUp(this.baseItem.getPrice() + this.taxes, 2);
 	}
 	
 	

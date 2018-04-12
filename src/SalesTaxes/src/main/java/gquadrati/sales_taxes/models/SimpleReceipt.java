@@ -8,7 +8,7 @@ import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import gquadrati.sales_taxes.domain.ItemTaxCalculator;
-import gquadrati.sales_taxes.helpers.FloatTruncator;
+import gquadrati.sales_taxes.helpers.DoubleHelper;
 
 public class SimpleReceipt implements Receipt {
 
@@ -28,10 +28,10 @@ public class SimpleReceipt implements Receipt {
 		DoubleStream p = taxedItems.stream().mapToDouble(t -> t.getTotal());
 		
 		total = taxedItems.stream().mapToDouble(t -> t.getTotal()).sum();
-		total = FloatTruncator.RoundingDown(total, 2);
+		total = DoubleHelper.RoundingDown(total, 2);
 		
 		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice()).sum();
-		salesTaxesTotal = FloatTruncator.RoundingDown(salesTaxesTotal, 2);
+		salesTaxesTotal = DoubleHelper.RoundingDown(salesTaxesTotal, 2);
 
 	}
 

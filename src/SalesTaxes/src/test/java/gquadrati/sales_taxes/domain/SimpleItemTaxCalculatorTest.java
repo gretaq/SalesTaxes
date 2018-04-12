@@ -7,19 +7,10 @@ import static org.junit.Assert.*;
 
 import org.junit.*;
 
-public class SimpleItemTaxCalculatorTests {
+public class SimpleItemTaxCalculatorTest {
 
 	SimpleItemTaxCalculator calc;
-
-	@BeforeClass
-	public static void oneTimeSetUp() {
-		// one-time initialization code
-	}
-
-	@AfterClass
-	public static void oneTimeTearDown() {
-		// one-time cleanup code
-	}
+	
 
 	@Before
 	public void setUp() {
@@ -45,7 +36,7 @@ public class SimpleItemTaxCalculatorTests {
 		Item item = new ShoppingBasketItem("", SimpleItemConfiguration.CAT_BOOK, true, 3.5);
 
 		double tax = calc.calculateTaxesFor(item);
-		assertTrue(0.2 == tax);
+		assertTrue(""+tax, 0.2 == tax);
 	}
 
 }
