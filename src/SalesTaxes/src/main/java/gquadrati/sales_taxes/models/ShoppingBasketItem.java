@@ -2,26 +2,37 @@ package gquadrati.sales_taxes.models;
 
 public final class ShoppingBasketItem implements Item {
 
+	private int id;
 	private String name;
 	private String category;
 	private boolean isImported;
 	private double price;
-	//private int quantity;
-	
-	public ShoppingBasketItem(String name, 
-							String category, 
-							boolean isImported,
-							double price) 
-	{
-		this.name = name;
-		this.category=category;
-		this.isImported = isImported;
-		this.price = price;	
-		//this.quantity = 1;
+	private int quantity;
+
+	public ShoppingBasketItem(int id, String name, String category, boolean isImported, double price) {
+
+		this(id, name, category, isImported, price, 1);
 	}
-	
-	
-	
+
+	/**
+	 * Base constructor
+	 */
+	public ShoppingBasketItem(int id, String name, String category, boolean isImported, double price,
+			int initialQuantity) {
+
+		this.id = id;
+		this.name = name;
+		this.category = category;
+		this.isImported = isImported;
+		this.price = price;
+		this.quantity = initialQuantity;
+	}
+
+	@Override
+	public int getId() {
+		return id;
+	}
+
 	@Override
 	public String getName() {
 		return name;
@@ -41,6 +52,74 @@ public final class ShoppingBasketItem implements Item {
 	public double getPrice() {
 		return price;
 	}
-	 
+
+	public int getQuantity() {
+		return quantity;
+	}
+	
+	@Override
+	public void addQuantity(int quantity) {
+		this.quantity += quantity;
+	}
+	
+	@Override
+	public int removeQuantity(int quantity) {
+		
+		int newQuantity = this.quantity - quantity;
+		
+		this.quantity = (newQuantity < 0) ? 0 : newQuantity;
+		
+		return this.quantity;
+	}
+	
+	
+
+	/*
+	 * hashCode function overriding WITHOUT quantity: 
+	 * items can be equals even having different quantities. 
+	 * 
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((category == null) ? 0 : category.hashCode());
+		result = prime * result + id;
+		result = prime * result + (isImported ? 1231 : 1237);
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		long temp;
+		temp = Double.doubleToLongBits(price);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ShoppingBasketItem other = (ShoppingBasketItem) obj;
+		if (category == null) {
+			if (other.category != null)
+				return false;
+		} else if (!category.equals(other.category))
+			return false;
+		if (id != other.id)
+			return false;
+		if (isImported != other.isImported)
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		if (Double.doubleToLongBits(price) != Double.doubleToLongBits(other.price))
+			return false;
+		return true;
+	}
 
 }

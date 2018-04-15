@@ -4,21 +4,38 @@ import gquadrati.sales_taxes.domain.ItemTaxCalculator;
 import gquadrati.sales_taxes.helpers.DoubleHelper;
 
 //Item Decorator - Decorates item with tax price
+/**
+ * @author Greta Quadrati
+ *
+ *         Simple Implementation of TaxedItem interface 
+ *         It uses an ItemTaxCalculator object to calculate to decorate the Item with taxes
+ */
 public class SimpleTaxedItem implements TaxedItem {
+
+	private ItemTaxCalculator itemTaxCalculator;
 
 	private Item baseItem;
 	private double taxes;
 	private double total;
+
 	
-	
-	public SimpleTaxedItem(Item baseItem, ItemTaxCalculator itemTaxCalculator)
-	{
+	/**
+	 * Base constructor
+	 * @param baseItem the item to decorate with taxes
+	 * @param itemTaxCalculator the tax calculator
+	 */
+	public SimpleTaxedItem(Item baseItem, ItemTaxCalculator itemTaxCalculator) {
+		this.itemTaxCalculator = itemTaxCalculator;
 		this.baseItem = baseItem;
-		this.taxes = itemTaxCalculator.calculateTaxesFor(baseItem);
-		this.total = DoubleHelper.RoundingUp(this.baseItem.getPrice() + this.taxes, 2);
+
+		calculateTaxes();
 	}
-	
-	
+
+	@Override
+	public int getId() {
+		return baseItem.getId();
+	}
+
 	@Override
 	public String getName() {
 		return baseItem.getName();
@@ -39,19 +56,41 @@ public class SimpleTaxedItem implements TaxedItem {
 		return baseItem.getPrice();
 	}
 
-
 	@Override
-	public double getTaxPrice() {		
+	public double getTaxPrice() {
 		return taxes;
 	}
-
 
 	@Override
 	public double getTotal() {
 		return total;
 	}
+
+	@Override
+	public int getQuantity() {
+		return baseItem.getQuantity();
+	}
+
+	@Override
+	public void addQuantity(int quantity) {
+		baseItem.addQuantity(quantity);
+		calculateTaxes();
+	}
+
+	@Override
+	public int removeQuantity(int quantity) {
+		int newQuantity = baseItem.removeQuantity(quantity);
+		calculateTaxes();
+
+		return newQuantity;
+	}
+
+	// Private Methods
 	
-	
-	
-	
+	private void calculateTaxes() {
+
+		this.taxes = itemTaxCalculator.calculateTaxesFor(baseItem);
+		this.total = DoubleHelper.RoundingUp(this.baseItem.getPrice() + this.taxes, 2);
+	}
+
 }

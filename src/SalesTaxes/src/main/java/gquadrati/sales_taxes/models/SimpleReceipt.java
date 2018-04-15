@@ -1,15 +1,21 @@
 package gquadrati.sales_taxes.models;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.DoubleStream;
 import java.util.stream.Stream;
 
 import gquadrati.sales_taxes.domain.ItemTaxCalculator;
 import gquadrati.sales_taxes.helpers.DoubleHelper;
 
+/**
+ * @author Greta Quadrati
+ * 
+ *         Simple implementation of Receipt interface
+ * 
+ *         It's created from a ShoppingBasket item 
+ *         It calculates shopping items' taxes by the ItemTaxCalculator object.
+ *         
+ */
 public class SimpleReceipt implements Receipt {
 
 	List<TaxedItem> taxedItems;
@@ -17,21 +23,21 @@ public class SimpleReceipt implements Receipt {
 	double total;
 	double salesTaxesTotal;
 
-
-	public SimpleReceipt(ShoppingBasket shoppingBasket, ItemTaxCalculator itemTaxCalculator)
-	{
-		taxedItems = shoppingBasket
-				.getItems()
-				.map(i -> new SimpleTaxedItem(i, itemTaxCalculator))
+	/**
+	 * SImpleReceipt can ben construct with a ShoppingBasket and an ItemTaxCalculator objects
+	 * @param shoppingBasket the shopping basket of which to create the receipt
+	 * @param itemTaxCalculator the object that calculates the taxes of each item within th shopping basket
+	 */
+	public SimpleReceipt(ShoppingBasket shoppingBasket, ItemTaxCalculator itemTaxCalculator) {
+		
+		taxedItems = shoppingBasket.getItems().map(i -> new SimpleTaxedItem(i, itemTaxCalculator))
 				.collect(Collectors.toList());
-		
-		DoubleStream p = taxedItems.stream().mapToDouble(t -> t.getTotal());
-		
-		total = taxedItems.stream().mapToDouble(t -> t.getTotal()).sum();
-		total = DoubleHelper.RoundingDown(total, 2);
-		
-		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice()).sum();
-		salesTaxesTotal = DoubleHelper.RoundingDown(salesTaxesTotal, 2);
+
+		total = taxedItems.stream().mapToDouble(t -> t.getTotal() * t.getQuantity()).sum();
+		total = DoubleHelper.RoundingUp(total, 2);
+
+		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice() * t.getQuantity()).sum();
+		salesTaxesTotal = DoubleHelper.RoundingUp(salesTaxesTotal, 2);
 
 	}
 
@@ -41,27 +47,25 @@ public class SimpleReceipt implements Receipt {
 	}
 
 	@Override
-	public double getSalesTaxesTotal() {
+	public double getTaxesTotal() {
 		return salesTaxesTotal;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Stream<Item> getItems() {
-		List<? extends Item> items =  taxedItems;
+		List<? extends Item> items = taxedItems;
 		return (Stream<Item>) items.stream();
 	}
 
-	
 	@Override
-	public String toString()
-	{
-		String val = "Total " + total
-					+ "\nSales Total " + salesTaxesTotal;
-		
+	public String toString() {
+		String val = "Total " + total + "\nSales Total " + salesTaxesTotal;
+
 		for (TaxedItem taxedItem : taxedItems) {
-			val += "\n1 " + taxedItem.GetCategory() + " " + taxedItem.getTotal();
+			val += "\n " + taxedItem.GetCategory() + " " + taxedItem.getTotal();
 		}
-		
+
 		return val;
 	}
 }
