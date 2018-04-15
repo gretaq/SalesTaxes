@@ -75,17 +75,17 @@ public class SimpleReceiptTest {
 	
 	@Test
 	public void TestQuantity() {
-		Item item1 = new ShoppingBasketItem(1,"", SimpleItemConfiguration.CAT_COSMETICS, true, 27.99, 2);
-		Item item2 = new ShoppingBasketItem(2, "", SimpleItemConfiguration.CAT_FOOD, false, 10.00, 3);
-		Item item3 = new ShoppingBasketItem(3, "", SimpleItemConfiguration.CAT_ENTERTAINMENT, false, 10.00, 4);
-		Item item4 = new ShoppingBasketItem(4, "", SimpleItemConfiguration.CAT_MED, true, 5.50, 5);
+		Item item1 = new ShoppingBasketItem(1,"", SimpleItemConfiguration.CAT_COSMETICS, true, 27.99);
+		Item item2 = new ShoppingBasketItem(2, "", SimpleItemConfiguration.CAT_FOOD, false, 10.00);
+		Item item3 = new ShoppingBasketItem(3, "", SimpleItemConfiguration.CAT_ENTERTAINMENT, false, 10.00);
+		Item item4 = new ShoppingBasketItem(4, "", SimpleItemConfiguration.CAT_MED, true, 5.50);
 		
 		ShoppingBasket basket = new SimpleShoppingBasket();
 		
-		basket.addItem(item1);
-		basket.addItem(item2);
-		basket.addItem(item3);
-		basket.addItem(item4);
+		basket.addItem(item1, 2);
+		basket.addItem(item2, 3);
+		basket.addItem(item3, 4);
+		basket.addItem(item4, 5);
 		
 		Receipt receipt = new SimpleReceipt(basket, calculator);
 		
@@ -93,28 +93,6 @@ public class SimpleReceiptTest {
 		assertTrue(receipt.getTotal() == 167.38);
 	}
 	
-	@Test
-	public void TestAddQuantity() {
-		Item item1 = new ShoppingBasketItem(1,"", SimpleItemConfiguration.CAT_COSMETICS, true, 27.99);
-		Item item2 = new ShoppingBasketItem(2, "", SimpleItemConfiguration.CAT_FOOD, false, 10.00);
-		Item item3 = new ShoppingBasketItem(3, "", SimpleItemConfiguration.CAT_ENTERTAINMENT, false, 10.00, 4);
-		Item item4 = new ShoppingBasketItem(4, "", SimpleItemConfiguration.CAT_MED, true, 5.50, 5);		
-		
-		item1.addQuantity(1);
-		item2.addQuantity(2);
-		
-		ShoppingBasket basket = new SimpleShoppingBasket();
-		
-		basket.addItem(item1);
-		basket.addItem(item2);
-		basket.addItem(item3);
-		basket.addItem(item4);
-		
-		Receipt receipt = new SimpleReceipt(basket, calculator);
-		
-		assertTrue(receipt.getTaxesTotal() == 13.9);
-		assertTrue(receipt.getTotal() == 167.38);
-	}
 	
 	
 	@Test
@@ -123,8 +101,8 @@ public class SimpleReceiptTest {
 		Item item1bis = new ShoppingBasketItem(1,"", SimpleItemConfiguration.CAT_COSMETICS, true, 27.99);
 		Item item2 = new ShoppingBasketItem(2, "", SimpleItemConfiguration.CAT_FOOD, false, 10.00);
 		Item item2bis = new ShoppingBasketItem(2, "", SimpleItemConfiguration.CAT_FOOD, false, 10.00);
-		Item item3 = new ShoppingBasketItem(3, "", SimpleItemConfiguration.CAT_ENTERTAINMENT, false, 10.00, 4);
-		Item item4 = new ShoppingBasketItem(4, "", SimpleItemConfiguration.CAT_MED, true, 5.50, 5);		
+		Item item3 = new ShoppingBasketItem(3, "", SimpleItemConfiguration.CAT_ENTERTAINMENT, false, 10.00);
+		Item item4 = new ShoppingBasketItem(4, "", SimpleItemConfiguration.CAT_MED, true, 5.50);		
 		
 		ShoppingBasket basket = new SimpleShoppingBasket();
 		
@@ -133,8 +111,8 @@ public class SimpleReceiptTest {
 		basket.addItem(item2);
 		basket.addItem(item2bis);
 		basket.addItem(item2bis);
-		basket.addItem(item3);
-		basket.addItem(item4);
+		basket.addItem(item3, 4);
+		basket.addItem(item4, 5);
 		
 		Receipt receipt = new SimpleReceipt(basket, calculator);
 		

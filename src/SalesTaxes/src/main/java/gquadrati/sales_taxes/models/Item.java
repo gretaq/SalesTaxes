@@ -18,18 +18,4 @@ public interface Item {
 
 	double getPrice();
 
-	int getQuantity();
-
-	/**
-	 * @param quantity increment item quantity with this value
-	 */
-	void addQuantity(int quantity);
-	
-	
-	/**
-	 * @param quantity the item quantity to decrement
-	 * @return the remaining quantity
-	 */
-	int removeQuantity(int quantity);
-
 }

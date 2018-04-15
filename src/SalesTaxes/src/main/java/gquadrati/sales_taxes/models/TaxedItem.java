@@ -18,4 +18,7 @@ public interface TaxedItem extends Item {
 	 * @return the price and tax sum
 	 */
 	double getTotal();
+	
+	
+	Item getDecoratedItem();
 }

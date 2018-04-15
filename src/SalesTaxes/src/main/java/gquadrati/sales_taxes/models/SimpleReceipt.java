@@ -24,7 +24,7 @@ public class SimpleReceipt implements Receipt {
 	double salesTaxesTotal;
 
 	/**
-	 * SImpleReceipt can ben construct with a ShoppingBasket and an ItemTaxCalculator objects
+	 * SimpleReceipt can be built with a ShoppingBasket and an ItemTaxCalculator objects
 	 * @param shoppingBasket the shopping basket of which to create the receipt
 	 * @param itemTaxCalculator the object that calculates the taxes of each item within th shopping basket
 	 */
@@ -33,10 +33,10 @@ public class SimpleReceipt implements Receipt {
 		taxedItems = shoppingBasket.getItems().map(i -> new SimpleTaxedItem(i, itemTaxCalculator))
 				.collect(Collectors.toList());
 
-		total = taxedItems.stream().mapToDouble(t -> t.getTotal() * t.getQuantity()).sum();
+		total = taxedItems.stream().mapToDouble(t -> t.getTotal() * shoppingBasket.getItemQuantity(t.getDecoratedItem())).sum();
 		total = DoubleHelper.RoundingUp(total, 2);
 
-		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice() * t.getQuantity()).sum();
+		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice() * shoppingBasket.getItemQuantity(t.getDecoratedItem())).sum();
 		salesTaxesTotal = DoubleHelper.RoundingUp(salesTaxesTotal, 2);
 
 	}
@@ -58,14 +58,5 @@ public class SimpleReceipt implements Receipt {
 		return (Stream<Item>) items.stream();
 	}
 
-	@Override
-	public String toString() {
-		String val = "Total " + total + "\nSales Total " + salesTaxesTotal;
-
-		for (TaxedItem taxedItem : taxedItems) {
-			val += "\n " + taxedItem.GetCategory() + " " + taxedItem.getTotal();
-		}
-
-		return val;
-	}
+	
 }

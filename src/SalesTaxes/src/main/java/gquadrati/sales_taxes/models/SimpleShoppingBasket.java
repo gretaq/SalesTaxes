@@ -11,40 +11,50 @@ import java.util.stream.Stream;
 public class SimpleShoppingBasket implements ShoppingBasket {
 
 	// For storing/retrieving item from the basket
-	private HashMap<Item, Item> itemsInShoppingBasket;
+	private HashMap<Item, Integer> itemsInShoppingBasket;
 
 	public SimpleShoppingBasket() {
-		itemsInShoppingBasket = new HashMap<Item, Item>();
+		itemsInShoppingBasket = new HashMap<Item, Integer>();
 	}
 
 	@Override
 	public void addItem(Item item) {
-
-		Item itemInBasket = itemsInShoppingBasket.get(item);
-
-		if (itemInBasket != null)
-			itemInBasket.addQuantity(item.getQuantity());
-		else
-			itemsInShoppingBasket.put(item, item);
+		this.addItem(item, 1);
 	}
 
 	@Override
-	public Stream<Item> getItems() {
+	public void addItem(Item item, int quantity) {
 
-		return itemsInShoppingBasket.values().stream();
+		Integer itemInBasketQuantity = itemsInShoppingBasket.getOrDefault(item, 0);
+
+		itemInBasketQuantity += quantity;
+		itemsInShoppingBasket.put(item, itemInBasketQuantity);
 	}
 
 	@Override
 	public void removeItem(Item item) {
 
-		Item itemInBasket = itemsInShoppingBasket.get(item);
+		Integer itemInBasketQuantity = itemsInShoppingBasket.get(item);
 
-		if (itemInBasket != null) {
-			int newQuantity = itemInBasket.removeQuantity(item.getQuantity());
+		if (itemInBasketQuantity != null) {
+			itemInBasketQuantity--;
 
-			if (newQuantity == 0)
+			if (itemInBasketQuantity == 0)
 				itemsInShoppingBasket.remove(item);
+			else
+				itemsInShoppingBasket.put(item, itemInBasketQuantity);
 		}
 	}
 
+	@Override
+	public int getItemQuantity(Item item) {
+
+		return itemsInShoppingBasket.getOrDefault(item, 0);
+	}
+
+	@Override
+	public Stream<Item> getItems() {
+
+		return itemsInShoppingBasket.keySet().stream();
+	}
 }

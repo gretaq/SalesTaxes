@@ -7,8 +7,8 @@ import gquadrati.sales_taxes.helpers.DoubleHelper;
 /**
  * @author Greta Quadrati
  *
- *         Simple Implementation of TaxedItem interface 
- *         It uses an ItemTaxCalculator object to calculate to decorate the Item with taxes
+ *         Simple Implementation of TaxedItem interface It uses an
+ *         ItemTaxCalculator object to calculate to decorate the Item with taxes
  */
 public class SimpleTaxedItem implements TaxedItem {
 
@@ -18,11 +18,13 @@ public class SimpleTaxedItem implements TaxedItem {
 	private double taxes;
 	private double total;
 
-	
 	/**
 	 * Base constructor
-	 * @param baseItem the item to decorate with taxes
-	 * @param itemTaxCalculator the tax calculator
+	 * 
+	 * @param baseItem
+	 *            the item to decorate with taxes
+	 * @param itemTaxCalculator
+	 *            the tax calculator
 	 */
 	public SimpleTaxedItem(Item baseItem, ItemTaxCalculator itemTaxCalculator) {
 		this.itemTaxCalculator = itemTaxCalculator;
@@ -67,26 +69,14 @@ public class SimpleTaxedItem implements TaxedItem {
 	}
 
 	@Override
-	public int getQuantity() {
-		return baseItem.getQuantity();
+	public Item getDecoratedItem() {
+		return baseItem;
 	}
 
-	@Override
-	public void addQuantity(int quantity) {
-		baseItem.addQuantity(quantity);
-		calculateTaxes();
-	}
-
-	@Override
-	public int removeQuantity(int quantity) {
-		int newQuantity = baseItem.removeQuantity(quantity);
-		calculateTaxes();
-
-		return newQuantity;
-	}
+	
 
 	// Private Methods
-	
+
 	private void calculateTaxes() {
 
 		this.taxes = itemTaxCalculator.calculateTaxesFor(baseItem);
