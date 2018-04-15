@@ -55,7 +55,8 @@ public class SimpleTaxedItem implements TaxedItem {
 
 	@Override
 	public double getPrice() {
-		return baseItem.getPrice();
+		
+		return baseItem.getPrice() + taxes;
 	}
 
 	@Override
@@ -63,10 +64,7 @@ public class SimpleTaxedItem implements TaxedItem {
 		return taxes;
 	}
 
-	@Override
-	public double getTotal() {
-		return total;
-	}
+
 
 	@Override
 	public Item getDecoratedItem() {

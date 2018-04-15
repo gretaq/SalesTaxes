@@ -33,7 +33,7 @@ public class SimpleReceipt implements Receipt {
 		taxedItems = shoppingBasket.getItems().map(i -> new SimpleTaxedItem(i, itemTaxCalculator))
 				.collect(Collectors.toList());
 
-		total = taxedItems.stream().mapToDouble(t -> t.getTotal() * shoppingBasket.getItemQuantity(t.getDecoratedItem())).sum();
+		total = taxedItems.stream().mapToDouble(t -> t.getPrice() * shoppingBasket.getItemQuantity(t.getDecoratedItem())).sum();
 		total = DoubleHelper.RoundingUp(total, 2);
 
 		salesTaxesTotal = taxedItems.stream().mapToDouble(t -> t.getTaxPrice() * shoppingBasket.getItemQuantity(t.getDecoratedItem())).sum();
